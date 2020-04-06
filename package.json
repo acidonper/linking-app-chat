@@ -1,0 +1,32 @@
+{
+  "name": "linking-app-chat",
+  "version": "1.0.0",
+  "description": "Linking App Chat Service",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acidonper/linking-app-chat.git"
+  },
+  "author": "Asier Cidon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/acidonper/linking-app-chat/issues"
+  },
+  "homepage": "https://github.com/acidonper/linking-app-chat#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "http-server": "^0.12.1",
+    "nodemon": "^2.0.2",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1"
+  }
+}

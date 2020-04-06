@@ -1,0 +1,41 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Chat python</h1>
+    <div>
+      <ul id="messages"></ul>
+    </div>
+    <div>
+      <form id="message-form" action="">
+        <input type="text" id="m" placeholder="Mensaje" />
+        <button type="submit">Send!</button>
+      </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const room = "python";
+      const socket = io.connect("/tech");
+
+      $("form").submit(() => {
+        let msg = $("#m").val();
+        socket.emit("message", { msg, room });
+        $("#m").val("");
+        return false;
+      });
+
+      socket.on("connect", () => {
+        socket.emit("join", { room: room });
+      });
+
+      socket.on("message", (msg) => {
+        $("#messages").append($("<li>").text(msg));
+      });
+    </script>
+  </body>
+</html>
