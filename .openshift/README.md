@@ -51,9 +51,9 @@ $ watch oc get all -n projectexample01
 $ oc get route -n projectexample01
 
 # Examples
-$ curl http://linking-app-chat-linkingapp.apps.example.com
-$ curl https://linking-app-chat-linkingapp.apps.example.com
-$ curl http:linking-app-chat-http-linkingapp.apps.example.com
+$ curl http://linking-app-chat-projectexample01.apps.example.com
+$ curl https://linking-app-chat-projectexample01.apps.example.com
+$ curl http:linking-app-chat-http-projectexample01.apps.example.com
 ```
 
 ## Author
