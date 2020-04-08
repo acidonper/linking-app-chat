@@ -11,7 +11,7 @@
 usage() {
 echo "Usage: $0 <project_name> <git_user> <git_password> "
 echo "Example:"
-echo "  ./linking-app-chat-template-deploy.sh <project_name> <git_user> <git_password> "
+echo "  ./linking-app-chat-template-deploy.sh linking-app linkingappspain pass123"
 exit 1
 }
 
