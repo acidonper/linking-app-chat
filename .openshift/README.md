@@ -1,6 +1,6 @@
 # Linking App Chat in OpenShift
 
-This procedure tries to give an overview of the procedure involved in deploy Linking-App-Back in an OpenShift environment, in particular OpenShift 4.2 environment.
+This procedure tries to give an overview of the procedure involved in deploy Linking-App-Chat in an OpenShift environment, in particular OpenShift 4.2 environment.
 
 ## Requisites
 
@@ -37,12 +37,23 @@ $ sh linking-app-chat-template-deploy.sh projectexample01 <git_user> <git_passwo
 
 ## Test
 
-Once the procedure execution is finished, it is possible to test Linking App Images following next steps:
+Once the procedure execution is finished, it is possible to test Linking App Chat following next steps:
 
 - Manually testing pods deployment and other objects creation
 
 ```
 $ watch oc get all -n projectexample01
+```
+
+- Test routes
+
+```
+$ oc get route -n projectexample01
+
+# Examples
+$ curl http://linking-app-chat-linkingapp.apps.example.com
+$ curl https://linking-app-chat-linkingapp.apps.example.com
+$ curl http:linking-app-chat-http-linkingapp.apps.example.com
 ```
 
 ## Author

@@ -70,6 +70,34 @@ objects:
     status:
       loadBalancer: {}
   - apiVersion: v1
+    kind: Route
+    metadata:
+      name: ${SERVICE_NAME}
+      namespace: ${NAMESPACE}
+    spec:
+      to:
+        kind: Service
+        name: ${SERVICE_NAME}
+      port:
+        targetPort: ${SERVICE_NAME}-http
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
+        wildcardPolicy: None
+    status: {}
+  - apiVersion: v1
+    kind: Route
+    metadata:
+      name: ${SERVICE_NAME}-http
+      namespace: ${NAMESPACE}
+    spec:
+      to:
+        kind: Service
+        name: ${SERVICE_NAME}
+      port:
+        targetPort: ${SERVICE_NAME}-http
+    status: {}
+  - apiVersion: v1
     kind: DeploymentConfig
     metadata:
       name: ${SERVICE_NAME}

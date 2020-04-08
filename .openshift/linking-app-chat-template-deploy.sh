@@ -36,7 +36,7 @@ oc process -f linking-app-chat-template.yaml  \
 oc start-build bc/$SERVICE_NAME -n $PROJECT_NAME
 
 # Wait for previous process
-sleep 60
+sleep 900
 
 # Start deployment process
 oc rollout latest $SERVICE_NAME -n $PROJECT_NAME

@@ -4,7 +4,7 @@
   "description": "Linking App Chat Service",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"tests have not provided\"",
+    "test": "echo \"tests have not been provided\"",
     "start": "nodemon src/app.js"
   },
   "repository": {
