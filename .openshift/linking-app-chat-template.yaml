@@ -1,0 +1,154 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    description: ${SERVICE_NAME} (NODEJS App)
+  name: ${SERVICE_NAME}
+  namespace: ${NAMESPACE}
+objects:
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: ${SERVICE_NAME}-git
+      namespace: ${NAMESPACE}
+    stringData:
+      username: ${SERVICE_GIT_USER}
+      password: ${SERVICE_GIT_PASSWORD}
+    type: kubernetes.io/basic-auth
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      annotations:
+        description: Keeps track of changes in the application image
+      name: ${SERVICE_NAME}
+      namespace: ${NAMESPACE}
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      name: ${SERVICE_NAME}
+      namespace: ${NAMESPACE}
+    spec:
+      output:
+        to:
+          kind: ImageStreamTag
+          name: ${SERVICE_NAME}:latest
+      source:
+        contextDir: /
+        git:
+          ref: master
+          uri: ${SERVICE_GIT_URL}
+        type: Git
+        sourceSecret:
+          name: ${SERVICE_NAME}-git
+      strategy:
+        sourceStrategy:
+          env:
+            - name: GIT_SSL_NO_VERIFY
+              value: "true"
+            - name: NODE_TLS_REJECT_UNAUTHORIZED
+              value: "0"
+          from:
+            kind: ImageStreamTag
+            name: ${NODEJS_IMAGE}
+            namespace: openshift
+        type: Source
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: ${SERVICE_NAME}
+      namespace: ${NAMESPACE}
+    spec:
+      ports:
+        - name: ${SERVICE_NAME}-http
+          port: 5002
+          protocol: TCP
+          targetPort: 5002
+      selector:
+        deploymentconfig: ${SERVICE_NAME}
+      sessionAffinity: None
+      type: ClusterIP
+    status:
+      loadBalancer: {}
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      name: ${SERVICE_NAME}
+    spec:
+      replicas: 1
+      selector:
+        deploymentconfig: ${SERVICE_NAME}
+      strategy:
+        resources: {}
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            deploymentconfig: ${SERVICE_NAME}
+        spec:
+          containers:
+            - name: ${SERVICE_NAME}
+              image: image-registry.openshift-image-registry.svc:5000/${NAMESPACE}/${SERVICE_NAME}
+              imagePullPolicy: Always
+              livenessProbe:
+                tcpSocket:
+                  port: 5002
+                initialDelaySeconds: 15
+                timeoutSeconds: 1
+                periodSeconds: 10
+                successThreshold: 1
+                failureThreshold: 3
+              readinessProbe:
+                httpGet:
+                  path: /health
+                  port: 5002
+                  scheme: HTTP
+                initialDelaySeconds: 15
+                timeoutSeconds: 10
+                periodSeconds: 30
+                successThreshold: 1
+                failureThreshold: 1
+              ports:
+                - containerPort: 5002
+                  protocol: TCP
+              resources:
+                limits:
+                  memory: 1Gi
+              securityContext:
+                capabilities: {}
+                privileged: false
+              terminationMessagePath: /dev/termination-log
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+      triggers:
+        - type: ConfigChange
+    status: {}
+parameters:
+  - description: The OpenShift Namespace where the ImageStream resides.
+    displayName: Namespace
+    name: NAMESPACE
+    required: true
+  - description: Name of the service NODEJS
+    displayName: NODEJS Service Name
+    name: SERVICE_NAME
+  - description: Git repository where service is stored
+    displayName: GIT Service URL
+    name: SERVICE_GIT_URL
+  - description: User with Git repository download permissions
+    displayName: SERVICE_GIT_USER
+    name: SERVICE_GIT_USER
+  - description: Git User Password
+    displayName: SERVICE_GIT_PASSWORD
+    name: SERVICE_GIT_PASSWORD
+  - description: NodeJS image
+    displayName: NODEJS_IMAGE
+    name: NODEJS_IMAGE
+    value: "nodejs:latest"
