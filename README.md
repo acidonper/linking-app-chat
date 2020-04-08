@@ -1,4 +1,4 @@
-# Linking App Images Repository
+# Linking App Chat Service
 
 _Linking App Chat_ is a NodeJS project which provides a Chat to allow _Linking App Front_ users comunicate themselves. Regarding technologies involved, the following list offer an application overview:
 
