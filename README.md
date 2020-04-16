@@ -29,7 +29,7 @@ Runs the src/app.js file in order to run the application in both development adn
 
 ### `npm test`
 
-Currently, test is not implemented in this repository.
+Currently, test is not implemented in this repository. 
 
 ## License
 
