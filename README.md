@@ -1,6 +1,6 @@
 # Linking App Chat Service
 
-_Linking App Chat_ is a NodeJS project which provides a Chat to allow _Linking App Front_ users comunicate themselves. Regarding technologies involved, the following list offer an application overview:
+_Linking App Chat_ is a NodeJS project which provides a Chat tool in order to allow _Linking App Front_ users a way of communication with each other. Regarding technologies involved, the following list offer an application overview:
 
 - NodeJS
 - Javascript
